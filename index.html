@@ -3,84 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Dating Sim - Visual Novel</title>
+    <title>AI Dating Sim - Fixed</title>
     <style>
         :root { --primary: #ff4d6d; --bg: #fff0f3; --text: #590d22; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        
-        #game-container { width: 900px; height: 600px; background: white; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); display: flex; overflow: hidden; }
+        #game-container { width: 950px; height: 650px; background: white; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); display: flex; overflow: hidden; border: 4px solid #ffccd5; }
         
         /* Sidebar */
-        #sidebar { width: 250px; background: #ffb3c1; padding: 20px; display: flex; flex-direction: column; border-right: 2px solid #ff85a1; }
-        .stat-box { background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); }
-        .stat-label { font-size: 12px; font-weight: bold; text-transform: uppercase; color: #ff4d6d; }
-        .stat-value { font-size: 18px; font-weight: bold; }
+        #sidebar { width: 260px; background: #ffccd5; padding: 25px; display: flex; flex-direction: column; gap: 10px; }
+        .stat-box { background: white; padding: 15px; border-radius: 12px; border: 2px solid #ff85a1; }
+        .stat-label { font-size: 11px; font-weight: bold; text-transform: uppercase; color: #c9184a; letter-spacing: 1px; }
+        .stat-value { font-size: 18px; font-weight: bold; color: #590d22; }
 
         /* Main Area */
-        #main-area { flex-grow: 1; display: flex; flex-direction: column; position: relative; }
-        .screen { display: none; padding: 30px; height: 100%; box-sizing: border-box; }
+        #main-area { flex-grow: 1; display: flex; flex-direction: column; background: #fff; }
+        .screen { display: none; padding: 40px; height: 100%; box-sizing: border-box; overflow-y: auto; }
         .active { display: flex; flex-direction: column; }
 
-        /* Menu */
-        input, select, textarea { margin: 8px 0; padding: 12px; border: 2px solid #ffccd5; border-radius: 8px; outline: none; }
-        button { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        button:hover { background: #c9184a; transform: translateY(-2px); }
+        /* Inputs */
+        input, select, textarea { margin: 10px 0; padding: 12px; border: 2px solid #ffccd5; border-radius: 8px; font-size: 14px; }
+        button { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; }
+        button:hover { background: #c9184a; transform: scale(1.02); }
 
-        /* Chat */
-        #chat-log { flex-grow: 1; overflow-y: auto; padding: 15px; background: #fffcfd; border-radius: 10px; border: 1px solid #ffccd5; margin-bottom: 15px; }
-        .msg { margin-bottom: 12px; line-height: 1.5; }
+        /* Chat Log */
+        #chat-log { flex-grow: 1; overflow-y: auto; padding: 20px; background: #fffcfd; border: 1px solid #eee; border-radius: 10px; margin-bottom: 20px; }
+        .msg { margin-bottom: 15px; border-bottom: 1px solid #fff0f3; padding-bottom: 10px; }
         .ai-msg { color: #800f2f; }
-        .user-msg { color: #555; }
-        .action-msg { color: #c9184a; font-style: italic; font-weight: bold; }
-
+        .user-msg { color: #444; }
+        .action-msg { color: #ff4d6d; font-style: italic; font-weight: bold; }
+        
         #input-area { display: flex; gap: 10px; }
-        #user-input { flex-grow: 1; }
     </style>
 </head>
 <body>
 
 <div id="game-container">
     <div id="sidebar">
-        <h2 style="margin-top:0">Date Status</h2>
+        <h2 style="margin: 0 0 10px 0; color: #c9184a;">Status</h2>
         <div class="stat-box">
             <div class="stat-label">Meeting With</div>
-            <div id="stat-name" class="stat-value">???</div>
+            <div id="stat-name" class="stat-value">Searching...</div>
         </div>
         <div class="stat-box">
-            <div class="stat-label">Feelings</div>
-            <div id="stat-mood" class="stat-value">Neutral</div>
+            <div class="stat-label">Affection</div>
+            <div id="stat-mood" class="stat-value">N/A</div>
         </div>
         <div class="stat-box">
             <div class="stat-label">Your Wallet</div>
             <div id="stat-money" class="stat-value">$50.00</div>
         </div>
-        <div style="font-size: 11px; opacity: 0.7;">Tip: Use *asterisks* for actions like *holds hand* or *gives rose*.</div>
     </div>
 
     <div id="main-area">
         <div id="setup-screen" class="screen active">
-            <h1>Create Your Story</h1>
-            <input type="password" id="api-key" placeholder="Groq API Key">
-            <input type="text" id="user-name" placeholder="Your Name">
+            <h1>💕 Setup Your Date</h1>
+            <input type="password" id="api-key" placeholder="Groq API Key (gsk_...)">
+            <input type="text" id="user-name" placeholder="Enter Your Name">
             <select id="user-gender">
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Non-binary">Non-binary</option>
+                <option value="Male">I am: Male</option>
+                <option value="Female">I am: Female</option>
+                <option value="Non-binary">I am: Non-binary</option>
             </select>
             <select id="interest">
-                <option value="Men">Interested in: Men</option>
-                <option value="Women">Interested in: Women</option>
-                <option value="Everyone">Interested in: Everyone</option>
+                <option value="Man">Interested in: Men</option>
+                <option value="Woman">Interested in: Women</option>
+                <option value="Person">Interested in: Everyone</option>
             </select>
-            <textarea id="user-personality" placeholder="Your personality (e.g. Grumpy, Energetic, Flirty)..." rows="3"></textarea>
-            <button onclick="startGame()">Start the Date</button>
+            <textarea id="user-personality" placeholder="What is your personality like? (e.g. Shy bookworm, Athletic extrovert)"></textarea>
+            <button onclick="startGame()">Find a Match</button>
         </div>
 
         <div id="game-screen" class="screen">
             <div id="chat-log"></div>
             <div id="input-area">
-                <input type="text" id="user-input" placeholder="Say something or *do something*...">
-                <button onclick="sendMessage()">Interact</button>
+                <input type="text" id="user-input" placeholder="Type a message or *action*..." style="flex-grow: 1;">
+                <button onclick="sendMessage()">Send</button>
             </div>
         </div>
     </div>
@@ -88,9 +85,8 @@
 
 <script>
     let chatHistory = [];
-    let money = 50.00;
+    let userMoney = 50.00;
 
-    // Persist API Key
     document.getElementById('api-key').value = localStorage.getItem('groq_key') || '';
 
     async function startGame() {
@@ -98,23 +94,28 @@
         const name = document.getElementById('user-name').value;
         const personality = document.getElementById('user-personality').value;
         const interest = document.getElementById('interest').value;
+        const matchType = Math.random() > 0.5 ? "a very similar personality" : " a totally opposite, clashing personality";
 
-        if (!apiKey || !name) return alert("Please fill in your name and API Key.");
+        if (!apiKey || !name) return alert("Please provide your name and API Key.");
         localStorage.setItem('groq_key', apiKey);
 
         document.getElementById('setup-screen').classList.remove('active');
         document.getElementById('game-screen').classList.add('active');
 
-        // Setup the AI instructions
-        const systemPrompt = `You are a Dating Simulator. 
-        The Player: Name is ${name}, Personality is ${personality}. 
-        Your Task: Create a date character who is ${interest}. 
-        RULES: 
-        1. Start by introducing the date's name and describing the setting.
-        2. Always keep track of "Affection Level" (Neutral, Interested, Blushing, etc.).
-        3. The player will use *asterisks* for actions. Treat these as physical movements.
-        4. If the player buys something, acknowledge the cost.
-        5. Every response must end with a hidden JSON-style update on a new line like this: [STATUS: Name | Feeling].`;
+        // Stronger System Instructions
+        const systemPrompt = `You are an AI Dating Simulator. 
+        PLAYER DATA: Name: ${name}, Personality: ${personality}.
+        YOUR CHARACTER: Generate a unique ${interest} for the player to date. They should have ${matchType}.
+        
+        SIDEBAR UPDATE RULE: 
+        You MUST include the following format at the very end of EVERY response so the UI can update:
+        [[NAME: Character Name | MOOD: Current Feeling]]
+
+        GUIDELINES:
+        - Describe the setting and the character's reaction to the player.
+        - Interpret text inside *asterisks* as the player's physical actions.
+        - Keep the name of the DATE consistent in the [[NAME]] tag. Do NOT put the player's name there.
+        - Mention if the player spends money ($50 budget).`;
 
         chatHistory.push({ role: "system", content: systemPrompt });
         await callGroq();
@@ -125,7 +126,8 @@
         const text = input.value;
         if (!text) return;
 
-        appendMessage("You", text, text.includes('*') ? 'action-msg' : 'user-msg');
+        const isAction = text.includes('*');
+        appendMessage("You", text, isAction ? 'action-msg' : 'user-msg');
         input.value = "";
 
         chatHistory.push({ role: "user", content: text });
@@ -149,18 +151,19 @@
             const data = await response.json();
             let aiText = data.choices[0].message.content;
 
-            // Parse status updates from the AI response
-            const statusMatch = aiText.match(/\[STATUS: (.*?) \| (.*?)\]/);
+            // Extract Name and Mood using the double-bracket tag
+            const statusMatch = aiText.match(/\[\[NAME: (.*?) \| MOOD: (.*?)\]\]/);
             if (statusMatch) {
                 document.getElementById('stat-name').innerText = statusMatch[1];
                 document.getElementById('stat-mood').innerText = statusMatch[2];
+                // Remove the technical tag from the visible chat
                 aiText = aiText.replace(statusMatch[0], "").trim();
             }
 
             chatHistory.push({ role: "assistant", content: aiText });
             appendMessage("Date", aiText, "ai-msg");
         } catch (e) {
-            appendMessage("System", "Error connecting to Groq. Check your key.", "user-msg");
+            appendMessage("System", "Error: Ensure your Groq Key is valid.", "user-msg");
         }
     }
 
@@ -168,7 +171,11 @@
         const log = document.getElementById('chat-log');
         const div = document.createElement('div');
         div.className = `msg ${className}`;
-        div.innerHTML = `<strong>${sender}:</strong> ${text.replace(/\*(.*?)\*/g, '<em>*$1*</em>')}`;
+        
+        // Bold the sender name and format any asterisks found in the AI response too
+        let formattedText = text.replace(/\*(.*?)\*/g, '<span class="action-msg">*$1*</span>');
+        div.innerHTML = `<strong>${sender}:</strong> ${formattedText}`;
+        
         log.appendChild(div);
         log.scrollTop = log.scrollHeight;
     }
